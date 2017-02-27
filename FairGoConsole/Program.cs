@@ -20,18 +20,14 @@ namespace FairGoConsole
                 if (args[0] == "-sale")
                 {
                     System.Console.WriteLine("ITS ON SALE!");
+                    System.Console.WriteLine("(Prices include {0}% sales discount on crime titles)",localCart.SaleDiscount);
                     localCart.IsSale = true;
                 }
             }
             localCart.LoadCart();
-            var totals = localCart.GetTotals();
-            
-            System.Console.Write("Total for order ");
-            if (localCart.IsSale)
-            {
-                System.Console.Write("with salers discount");
-            }
-            System.Console.Write("is {0:c2}",localCart.GetTotals());
+
+            System.Console.WriteLine("Total Cost is {0:c2}", localCart.GetTotals(false));
+            System.Console.WriteLine("Total Cost Inc. Tax is {0:c2}", localCart.GetTotals(true));
         }
 
     }

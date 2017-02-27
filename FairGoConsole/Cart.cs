@@ -40,13 +40,18 @@ namespace FairGoConsole
             };
         }
 
-        public decimal GetTotals()
+        /// <summary>
+        /// Calculates the total price of the cart including sales discount if applicable
+        /// </summary>
+        /// <param name="isIncTax">bool to enable including tax</param>
+        /// <returns>decimal value of the total calculated price</returns>
+        public decimal GetTotals(bool isIncTax)
         {
             decimal total = new decimal(0.0);
 
             foreach (BookItem item in Content)
             {
-                var price = item.TotalPrice;
+                var price = isIncTax ? item.TotalPrice : item.Price;
                 total += price;
                 if (_isSale && item.Category == CategoryType.Crime) //apply discount if on sale
                 {

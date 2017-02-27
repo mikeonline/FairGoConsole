@@ -36,44 +36,84 @@ namespace FairGoConsole.Tests
         }
 
         [TestMethod]
-        public void TotalCart_single_NoSale()
+        public void TotalCart_single_NoSale_ExTax()
         {
             testCart = new Cart(); //reset cart
             testCart.IsSale = false;
             testCart.Content.Add(testBookItem);
-            Assert.AreEqual(expected: (decimal)1.1, actual: testCart.GetTotals(), message: "totals dont total");
+            Assert.AreEqual(expected: (decimal)1.0, actual: testCart.GetTotals(false), message: "totals dont total");
         }
         [TestMethod]
-        public void TotalCart_single_Sale_Crime()
+        public void TotalCart_single_NoSale_IncTax()
+        {
+            testCart = new Cart(); //reset cart
+            testCart.IsSale = false;
+            testCart.Content.Add(testBookItem);
+            Assert.AreEqual(expected: (decimal)1.1, actual: testCart.GetTotals(true), message: "totals dont total");
+        }
+
+        [TestMethod]
+        public void TotalCart_single_Sale_Crime_ExTax()
         {
             testCart = new Cart(); //reset cart
             testCart.IsSale = true;
             testCart.Content.Add(testBookItem);
-            Assert.AreEqual(expected: (decimal)1.045, actual: testCart.GetTotals(), message: "totals dont match");
+            Assert.AreEqual(expected: (decimal)0.95, actual: testCart.GetTotals(false), message: "totals dont match");
         }
         [TestMethod]
-        public void TotalCart_single_Sale_Fantasy()
+        public void TotalCart_single_Sale_Crime_IncTax()
+        {
+            testCart = new Cart(); //reset cart
+            testCart.IsSale = true;
+            testCart.Content.Add(testBookItem);
+            Assert.AreEqual(expected: (decimal)1.045, actual: testCart.GetTotals(true), message: "totals dont match");
+        }
+        [TestMethod]
+        public void TotalCart_single_Sale_Fantasy_ExTax()
         {
             testCart = new Cart(); //reset cart
             testCart.IsSale = true;
             testBookItem.Category = CategoryType.Fantasy; //  not on sale
             testCart.Content.Add(testBookItem);
-            Assert.AreEqual(expected: (decimal)1.1, actual: testCart.GetTotals(), message: "totals dont match");
+            Assert.AreEqual(expected: (decimal)1.0, actual: testCart.GetTotals(false), message: "totals dont match");
+        }
+        [TestMethod]
+        public void TotalCart_single_Sale_Fantasy_IncTax()
+        {
+            testCart = new Cart(); //reset cart
+            testCart.IsSale = true;
+            testBookItem.Category = CategoryType.Fantasy; //  not on sale
+            testCart.Content.Add(testBookItem);
+            Assert.AreEqual(expected: (decimal)1.1, actual: testCart.GetTotals(true), message: "totals dont match");
         }
 
         [TestMethod]
-        public void TotalCart_NoSale()
+        public void TotalCart_NoSale_ExTax()
         {
             //default stock
             testCart.IsSale = false;
-            Assert.AreEqual(expected: (decimal) 64.999, actual: testCart.GetTotals(), message: "totals dont match");
+            Assert.AreEqual(expected: (decimal)59.09, actual: testCart.GetTotals(false), message: "totals dont match");
         }
         [TestMethod]
-        public void TotalCart_Sale()
+        public void TotalCart_NoSale_IncTax()
+        {
+            //default stock
+            testCart.IsSale = false;
+            Assert.AreEqual(expected: (decimal)64.999, actual: testCart.GetTotals(true), message: "totals dont match");
+        }
+        [TestMethod]
+        public void TotalCart_Sale_ExTax()
         {
             //default stock
             testCart.IsSale = true;
-            Assert.AreEqual(expected: (decimal)63.51455, actual: testCart.GetTotals(), message: "totals dont match");
+            Assert.AreEqual(expected: (decimal)57.7405, actual: testCart.GetTotals(false), message: "totals dont match");
+        }
+        [TestMethod]
+        public void TotalCart_Sale_IncTax()
+        {
+            //default stock
+            testCart.IsSale = true;
+            Assert.AreEqual(expected: (decimal)63.51455, actual: testCart.GetTotals(true), message: "totals dont match");
         }
     }
 }
